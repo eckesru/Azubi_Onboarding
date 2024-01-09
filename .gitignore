@@ -70,3 +70,13 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Paid Assets
+/[Aa]ssets/[Pp]ackages/SyntyStudios/PolygonAdventure/
+/[Aa]ssets/[Pp]ackages/SyntyStudios/PolygonCity/
+/[Aa]ssets/[Pp]ackages/SyntyStudios/PolygonKnights/
+/[Aa]ssets/[Pp]ackages/SyntyStudios/PolygonOffice/
+/[Aa]ssets/[Pp]ackages/SyntyStudios/PolygonSamples/
+/[Aa]ssets/[Pp]ackages/SyntyStudios/PolygonStarter/
+/[Aa]ssets/[Pp]ackages/SyntyStudios/SimpleFX/
+/[Aa]ssets/[Pp]ackages/SyntyStudios/SimpleSky/
