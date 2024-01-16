@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
         // Berechnet die Bewegung anhand der Blickrichtung der Kamera
         direction = cameraView.forward * vertical + cameraView.right * horizontal;
 
-        // Verhindert Veraenderung der Höhe (Fliegen), wenn die Kamera nach oben/unten schaut
+        // Verhindert Veraenderung der Hoehe (Fliegen), wenn die Kamera nach oben/unten schaut
         direction.y = 0;
 
         // Fuehrt die Bewegung in die Blickrichtung der Kamera aus
