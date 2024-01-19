@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float walkMovementSpeed = 70.0f;
     [SerializeField] private float runMovementSpeed = 120.0f;
     [SerializeField] private float dragForce = 10.0f;
+    [SerializeField] public Transform cameraView;
+    [SerializeField] private Transform playerObject;
 
     private float movementSpeed;
 
@@ -22,7 +24,6 @@ public class PlayerController : MonoBehaviour
 
     private float playerHeight;
 
-    public Transform cameraView;
 
     [SerializeField] private GameManager gameManager;
 
@@ -58,6 +59,8 @@ public class PlayerController : MonoBehaviour
         HandleMovementOnSlope();
 
         HandlePlayerMovement();
+
+        HandlePlayerRotation();
 
     }
 
@@ -136,5 +139,11 @@ public class PlayerController : MonoBehaviour
 
         // Fixiert die Ziehkraft des Spielers auf einen fixen Wert (Verhindert Rutschen auf dem Boden)
         rb.drag = dragForce;
+    }
+
+        public void HandlePlayerRotation()
+    {
+        // Passt die Rotation des Spielers analog an die Kamerabewegung an.
+         playerObject.rotation = cameraView.rotation;
     }
 }
