@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "DLBMIAMVR01_Azubi_Onboarding.sln"
+    "dotnet.defaultSolution": "DLBMIAMVR02_Azubi_Onboarding.sln"
 }
