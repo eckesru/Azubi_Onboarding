@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float walkMovementSpeed = 70.0f;
     [SerializeField] private float runMovementSpeed = 120.0f;
-    [SerializeField] private float dragForce = 10.0f;
     [SerializeField] public Transform cameraView;
     [SerializeField] private Transform playerObject;
 
@@ -24,6 +23,11 @@ public class PlayerController : MonoBehaviour
 
     private float playerHeight;
 
+    private LayerMask groundLayerMask;
+    private LayerMask slopeLayerMask;
+
+    [SerializeField] private float dragForce = 10.0f;
+    [SerializeField] private float groundCheckDistance = 0.3f;
 
     [SerializeField] private GameManager gameManager;
 
@@ -34,6 +38,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         playerHeight = cameraView.position.y;
+
+        groundLayerMask = LayerMask.GetMask("Ground");
+        slopeLayerMask = LayerMask.GetMask("Slope");
+
     }
 
     // Start is called before the first frame update
@@ -62,12 +70,14 @@ public class PlayerController : MonoBehaviour
 
         HandlePlayerRotation();
 
+        PreventPlayerClimbing();
+
     }
 
     private bool OnSlope() { 
 
         // Pruefung, ob Player sich auf einem Slope befindet
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f, slopeLayerMask))
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             return angle < slopeAngle && angle != 0;
@@ -111,7 +121,7 @@ public class PlayerController : MonoBehaviour
             if (rb.velocity.y < 0)
             {
                 // Beim Absteigen von Slopes wird der Spieler heruntergedrueckt
-                rb.AddForce(Vector3.down * 100.0f, ForceMode.Force);
+                rb.AddForce(Vector3.down * 80.0f, ForceMode.Force);
             }
         }
         else
@@ -141,9 +151,25 @@ public class PlayerController : MonoBehaviour
         rb.drag = dragForce;
     }
 
-        public void HandlePlayerRotation()
+    private void HandlePlayerRotation()
     {
-        // Passt die Rotation des Spielers analog an die Kamerabewegung an.
-         playerObject.rotation = cameraView.rotation;
+        // Passt die Blickrichtung des PlayerObjects analog an die Kamerabewegung an.
+        playerObject.rotation = Quaternion.Euler(0f, cameraView.eulerAngles.y, 0f);
+
     }
+
+    private void PreventPlayerClimbing()
+    {
+            if (!(OnGround() || OnSlope())) {
+                // Drückt denn Spieler auf den Boden, wenn er diesen ungewünscht verlaesst
+                rb.AddForce(Vector3.down * 1000.0f, ForceMode.Force);
+        }
+    }
+
+
+
+private bool OnGround()
+{
+    return Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayerMask);
+}
 }
