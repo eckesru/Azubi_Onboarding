@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
     private bool OnSlope() { 
 
         // Pruefung, ob Player sich auf einem Slope befindet
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f, slopeLayerMask))
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight, slopeLayerMask))
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             return angle < slopeAngle && angle != 0;
@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
             if (rb.velocity.y < 0)
             {
                 // Beim Absteigen von Slopes wird der Spieler heruntergedrueckt
-                rb.AddForce(Vector3.down * 80.0f, ForceMode.Force);
+                rb.AddForce(Vector3.down * 40.0f, ForceMode.Force);
             }
         }
         else
@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
     {
             if (!(OnGround() || OnSlope())) {
                 // Drückt denn Spieler auf den Boden, wenn er diesen ungewünscht verlaesst
-                rb.AddForce(Vector3.down * 1000.0f, ForceMode.Force);
+                rb.AddForce(Vector3.down * 500.0f, ForceMode.Force);
         }
     }
 
