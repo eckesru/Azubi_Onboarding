@@ -29,27 +29,28 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dragForce = 10.0f;
     [SerializeField] private float groundCheckDistance = 0.3f;
 
+    Collider[] collidersInRange;
+    [SerializeField] private float interactRange = 1.0f;
+
     [SerializeField] private GameManager gameManager;
 
     private Rigidbody rb;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
 
-        playerHeight = cameraView.position.y;
+        rb = GetComponent<Rigidbody>();
 
         groundLayerMask = LayerMask.GetMask("Ground");
         slopeLayerMask = LayerMask.GetMask("Slope");
+
+        playerHeight = cameraView.position.y;
 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        // Zentriert den Cursor in der Mitte und blendet ihn aus
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
     }
 
@@ -57,6 +58,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
+        checkInteractions();
+        
     }
 
     private void FixedUpdate()
@@ -161,7 +164,7 @@ public class PlayerController : MonoBehaviour
     private void PreventPlayerClimbing()
     {
             if (!(OnGround() || OnSlope())) {
-                // Drückt denn Spieler auf den Boden, wenn er diesen ungewünscht verlaesst
+                // Drueckt denn Spieler auf den Boden, wenn er diesen ungewünscht verlaesst
                 rb.AddForce(Vector3.down * 500.0f, ForceMode.Force);
         }
     }
@@ -171,5 +174,18 @@ public class PlayerController : MonoBehaviour
 private bool OnGround()
 {
     return Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayerMask);
+}
+
+private void checkInteractions() {
+    // Prueft, welche Collider von GameObjects sich innerhalb der interactRange befinden
+    // Speichere dann alle diese Collider in einem Array
+    collidersInRange = Physics.OverlapSphere(transform.position, interactRange);
+
+    foreach (Collider collider in collidersInRange) {
+        // Wenn eines der Objekte den entsprechenden Controller hat, fuehre die Interact()-Methode des Objekts aus
+        if (collider.TryGetComponent(out DoorController doorController)) {
+            doorController.Interact();
+        }
+    }
 }
 }
