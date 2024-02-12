@@ -30,7 +30,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.3f;
 
     Collider[] collidersInRange;
-    [SerializeField] private float interactRange = 1.0f;
+    List<IInteractable > filteredCollidersInRange;
+    [SerializeField] private float interactRange;
 
     [SerializeField] private GameManager gameManager;
 
@@ -58,7 +59,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        checkInteractions();
+        CheckInteractions();
         
     }
 
@@ -176,16 +177,24 @@ private bool OnGround()
     return Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayerMask);
 }
 
-private void checkInteractions() {
-    // Prueft, welche Collider von GameObjects sich innerhalb der interactRange befinden
-    // Speichere dann alle diese Collider in einem Array
-    collidersInRange = Physics.OverlapSphere(transform.position, interactRange);
+
+private void CheckInteractions() {
+    // Prüft, welche Collider von GameObjects sich innerhalb der interactRange befinden
+    Collider[] collidersInRange = Physics.OverlapSphere(transform.position, interactRange);
 
     foreach (Collider collider in collidersInRange) {
-        // Wenn eines der Objekte den entsprechenden Controller hat, fuehre die Interact()-Methode des Objekts aus
-        if (collider.TryGetComponent(out DoorController doorController)) {
-            doorController.Interact();
+        // Überprüft, ob das Objekt eine IInteractable-Komponente hat und innerhalb der interactRange liegt
+        if (collider.TryGetComponent<IInteractable>(out var interactable)) {
+
+            // Ermittelt die Distanz zwischen Spieler und Objekt
+            float distance = Vector3.Distance(transform.position, collider.transform.position);
+
+            // Führt die Interact()-Methode des Objekts aus, wenn es innerhalb der Reichweite ist
+            if (interactable.interactRange >= distance) {
+                interactable.Interact();
+            }
         }
     }
 }
+
 }

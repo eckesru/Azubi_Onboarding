@@ -5,14 +5,17 @@ using Unity.VisualScripting;
 using UnityEditor.Animations;
 using UnityEngine;
 
-public class DoorController : MonoBehaviour
+public class DoorController : MonoBehaviour, IInteractable
 {
     [SerializeField] public bool locked = true;
     [SerializeField] private bool openInside = true;
+    [SerializeField] private float _interactRange = 1.0f;
+    public float interactRange { get {return _interactRange;} private set {_interactRange = value;} }
     private bool opened = false;
     private Transform door;
     private float closedY;
-    private String roomName;
+    private String _roomName;
+    public String roomName {get {return _roomName;} private set {_roomName = value;}}
     private Animator animator;
 
     void Awake() {
@@ -66,6 +69,10 @@ public class DoorController : MonoBehaviour
 
     public String GetRoomName() {
         return roomName;
+    }
+
+    public float GetInteractRange() {
+        return interactRange;
     }
 
     private float GetOpenY() {
