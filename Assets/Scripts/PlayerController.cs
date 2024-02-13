@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
         groundLayerMask = LayerMask.GetMask("Ground");
         slopeLayerMask = LayerMask.GetMask("Slope");
 
-        playerHeight = cameraView.position.y;
+        playerHeight = cameraView.position.y + 1.0f;
 
     }
 
@@ -81,12 +82,12 @@ public class PlayerController : MonoBehaviour
     private bool OnSlope() { 
 
         // Pruefung, ob Player sich auf einem Slope befindet
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight, slopeLayerMask))
-        {
-            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < slopeAngle && angle != 0;
-        }
-        return false;
+        return Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight, slopeLayerMask);
+
+        // Alternative Version ohne LayerMask, Winkelberechnung ist beim rueckwaertsgehen allerdings inkorrekt
+        //float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+        //return angle < slopeAngle && angle != 0;
+
     }
 
     private Vector3 GetSlopeDirection()
@@ -124,7 +125,7 @@ public class PlayerController : MonoBehaviour
 
             if (rb.velocity.y < 0)
             {
-                // Beim Absteigen von Slopes wird der Spieler heruntergedrueckt
+                // Beim Absteigen von Slopes wird der Spieler leicht heruntergedrueckt
                 rb.AddForce(Vector3.down * 40.0f, ForceMode.Force);
             }
         }
@@ -165,8 +166,8 @@ public class PlayerController : MonoBehaviour
     private void PreventPlayerClimbing()
     {
             if (!(OnGround() || OnSlope())) {
-                // Drueckt denn Spieler auf den Boden, wenn er diesen ungewünscht verlaesst
-                rb.AddForce(Vector3.down * 500.0f, ForceMode.Force);
+                // Drueckt denn Spieler auf den Boden, wenn er diesen unerwuenscht verlaesst
+                rb.AddForce(Vector3.down * 200.0f, ForceMode.Force);
         }
     }
 
