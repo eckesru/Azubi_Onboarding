@@ -1,18 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
-
 public class GameManager : MonoBehaviour
 {
 
     [SerializeField] private PlayerController playerController;
-
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject ingameUI;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject pausePanel;
+
+    [SerializeField] private GameObject testnpc;
 
     private DoorController[] doors;
 
@@ -41,13 +42,14 @@ public class GameManager : MonoBehaviour
 
         UnlockDoors("Flur 1");
         UnlockDoors("Empfang");
+                ChatBubble.CreateChatBubble(testnpc, true, "Test123");
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void UnlockDoors(String roomName) {

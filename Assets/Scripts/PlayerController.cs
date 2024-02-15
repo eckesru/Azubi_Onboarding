@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
         groundLayerMask = LayerMask.GetMask("Ground");
         slopeLayerMask = LayerMask.GetMask("Slope");
 
-        playerHeight = cameraView.position.y + 1.0f;
+        playerHeight = cameraView.position.y;
 
     }
 
