@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
 
@@ -13,7 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject pausePanel;
 
-    [SerializeField] private GameObject testnpc;
+    [SerializeField] private NPCController testnpc;
 
     private DoorController[] doors;
 
@@ -42,8 +43,9 @@ public class GameManager : MonoBehaviour
 
         UnlockDoors("Flur 1");
         UnlockDoors("Empfang");
-                ChatBubble.CreateChatBubble(testnpc, true, "Test123");
 
+        string[] npc1text = new string[] {"Oh, du bist der neue. Richtig?", "Komm, ich zeig dir mal was.", "Das wird auch ganz lustig!"};
+        testnpc.SetupNPC(npc1text);
     }
 
     // Update is called once per frame
@@ -65,4 +67,5 @@ public class GameManager : MonoBehaviour
     public void AddPoints(int amount) {
         points += amount;
     }
+
 }
