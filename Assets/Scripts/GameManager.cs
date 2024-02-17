@@ -14,11 +14,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject pausePanel;
 
-    [SerializeField] private NPCController testnpc;
-
+    private NPCController[] npcs;
     private DoorController[] doors;
 
     private int points = 0;
+    private int keyItemsCollected = 0;
 
     public bool gameRunning = false;
     public bool gamePaused = false;
@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
     void Start()
     {
 
@@ -39,6 +38,7 @@ public class GameManager : MonoBehaviour
         //Time.timeScale = 1.0f;
         //gameRunning = true;
 
+        npcs = FindObjectsOfType<NPCController>();
         doors = FindObjectsOfType<DoorController>();
 
         UnlockDoors("Flur 1");
@@ -48,9 +48,19 @@ public class GameManager : MonoBehaviour
  //       testnpc.SetupNPC(npc1text);
     }
 
-    // Update is called once per frame
     void Update()
     {
+
+    }
+
+    private void ActivateNPCS(string npcName, string[] textLines) {
+
+        // Durchlaeuft alle NPC und aktiviert sie, wenn der Name uebereinstimmt
+        foreach (NPCController npc in npcs) {
+            if (npc.gameObject.name.Equals(npcName)) {
+                npc.SetupNPC(textLines);
+            }
+        }
 
     }
 
@@ -64,8 +74,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddPoints(int amount) {
-        points += amount;
+    public void AddPoint(bool keyItem) {
+        points++;
+
+        if (keyItem) {
+            keyItemsCollected += 1;
+        }
+
     }
 
 }

@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
 
-    private void Awake()
+    void Awake()
     {
 
         rb = GetComponent<Rigidbody>();
@@ -45,13 +45,11 @@ public class PlayerController : MonoBehaviour
         playerHeight = cameraView.position.y;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
 

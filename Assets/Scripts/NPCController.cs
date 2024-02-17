@@ -9,6 +9,9 @@ public class NPCController : MonoBehaviour, IInteractable
 
     [SerializeField] private float _interactRange = 4.0f;
     public float interactRange {get {return _interactRange;} private set{_interactRange = value;}}
+    [SerializeField] private string animationName;
+
+    Animator animator;
 
     private string[] textLines;
     
@@ -18,13 +21,17 @@ public class NPCController : MonoBehaviour, IInteractable
 
     private Transform chatBubble;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    void Awake() {
+
+        animator = GetComponent<Animator>();
+
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        animator.Play(animationName);
+    }
+
     void Update()
     {
 
@@ -39,14 +46,14 @@ public class NPCController : MonoBehaviour, IInteractable
 
     public void Interact() {
 
-        if (active && chatBubble == null && index < textLines.Length) {
+        if (active && index < textLines.Length && chatBubble == null) {
                 chatBubble = ChatBubble.CreateChatBubble(this.gameObject, textLines[index]);
                 index++;
         }
     }   
 
     private void OnTriggerEnter(Collider collider) {
-        if (index == textLines.Length) {
+        if (active && index == textLines.Length) {
             index = textLines.Length - 1;
         }
     }

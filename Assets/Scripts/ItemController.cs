@@ -13,13 +13,11 @@ public class ItemController : MonoBehaviour, IInteractable
     private bool pickedUp = false;
     private GameObject player;
 
-    // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player");
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (pickedUp) {
@@ -38,7 +36,7 @@ public class ItemController : MonoBehaviour, IInteractable
         if (distance < 1.0f) {
 
             GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            gameManager.AddPoints(1);
+            gameManager.AddPoint(keyItem);
             Destroy(gameObject);
         }
     }
