@@ -44,8 +44,8 @@ public class GameManager : MonoBehaviour
         UnlockDoors("Flur 1");
         UnlockDoors("Empfang");
 
-        string[] npc1text = new string[] {"Oh, du bist der neue. Richtig?", "Komm, ich zeig dir mal was.", "Das wird auch ganz lustig!"};
-        testnpc.SetupNPC(npc1text);
+  //      string[] npc1text = new string[] {"Oh, du bist der neue. Richtig?", "Komm, ich zeig dir mal was.", "Das wird auch ganz lustig!"};
+ //       testnpc.SetupNPC(npc1text);
     }
 
     // Update is called once per frame

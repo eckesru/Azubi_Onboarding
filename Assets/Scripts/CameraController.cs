@@ -21,10 +21,15 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleCameraRotation();
+        CalculateCameraRotation();
     }
 
-    private void HandleCameraRotation()
+    void FixedUpdate()
+    {
+        UpdateCameraRotation();
+    }
+
+    private void CalculateCameraRotation()
     {
         // Holen der Mausbewegung (X und Y-Achse) und Anpassung an Speed
         mouseX = Input.GetAxisRaw("Mouse X") * rotationSpeed * Time.fixedDeltaTime;
@@ -33,7 +38,9 @@ public class CameraController : MonoBehaviour
         // Berechnung der Aenderung der Blickrichtung
         yRotation += mouseX;
         xRotation -= mouseY;
+    }
 
+    private void UpdateCameraRotation() {
         // Ausfuehren der Aenderung der Blickrichtung
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }

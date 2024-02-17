@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private float vertical;
     private Vector3 direction;
 
-    private float slopeAngle = 40.0f;
+    // private float slopeAngle = 40.0f;
     private RaycastHit slopeHit;
 
     private float playerHeight;
@@ -31,7 +28,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.3f;
 
     Collider[] collidersInRange;
-    List<IInteractable > filteredCollidersInRange;
     [SerializeField] private float interactRange;
 
     [SerializeField] private GameManager gameManager;
@@ -47,7 +43,6 @@ public class PlayerController : MonoBehaviour
         slopeLayerMask = LayerMask.GetMask("Slope");
 
         playerHeight = cameraView.position.y;
-
     }
 
     // Start is called before the first frame update
@@ -76,6 +71,10 @@ public class PlayerController : MonoBehaviour
         HandlePlayerRotation();
 
         PreventPlayerClimbing();
+
+    }
+
+    private void LateUpdate() {
 
     }
 
@@ -159,9 +158,9 @@ public class PlayerController : MonoBehaviour
     private void HandlePlayerRotation()
     {
         // Passt die Blickrichtung des PlayerObjects analog an die Kamerabewegung an.
-        playerObject.rotation = Quaternion.Euler(0f, cameraView.eulerAngles.y, 0f);
-
+        transform.rotation = Quaternion.Euler(0f, cameraView.eulerAngles.y, 0f);
     }
+
 
     private void PreventPlayerClimbing()
     {
@@ -181,7 +180,7 @@ private bool OnGround()
 
 private void CheckInteractions() {
     // Prüft, welche Collider von GameObjects sich innerhalb der interactRange befinden
-    Collider[] collidersInRange = Physics.OverlapSphere(transform.position, interactRange);
+    collidersInRange = Physics.OverlapSphere(transform.position, interactRange);
 
     foreach (Collider collider in collidersInRange) {
         // Überprüft, ob das Objekt eine IInteractable-Komponente hat und innerhalb der interactRange liegt
