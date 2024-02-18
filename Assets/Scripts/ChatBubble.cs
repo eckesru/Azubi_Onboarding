@@ -4,22 +4,31 @@ using UnityEngine;
 using TMPro;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 public class ChatBubble : MonoBehaviour
 {
 
+    [SerializeField] private AudioClip blipSoundMale;
+    [SerializeField] private AudioClip blipSoundFemale;
+
+    private AudioClip blipSound;
+
     private SpriteRenderer backgroundSpriteRenderer;
     private TextMeshPro textMeshPro;
     private string text;
+    private char gender;
     private float timer = 0f;
-    private float timePerCharacter = 0.15f;
+    private float timePerCharacter;
+    private float bubbleDieTime;
     private int characterIndex = 0;
     private bool writeText = false;
     private Animator animator;
 
+
     // Hilfsfunktion zur automatischen Generierung von ChatBubbles
     // Optionale Argument enthalten Standardwerte, um die ChatBubble direkt vor einem stehenden NPC erscheinen zu lassen
-    public static Transform CreateChatBubble(GameObject gameObject, string text, bool sitting = false, float distance = 0.5f,  float rotation = 180) {
+    public static Transform CreateChatBubble(GameObject gameObject, string text, bool sitting, float distance,  float rotation, char gender) {
 
         // Instanzierung des GameObjects als Child des GameObjects, basierend auf dem ChatBubble-Prefab
         Transform chatBubbleTransform = Instantiate(GameAssets.Instance.chatBubble, gameObject.transform);
@@ -27,11 +36,11 @@ public class ChatBubble : MonoBehaviour
         // Auf Basis des MeshRenderers wird die Groesse des GameObjects bestimmt und die ChatBubble entsprechend platziert
         SkinnedMeshRenderer renderer = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
         float heightOffset; // Da eine Animation nicht den MeshRenderer veraendert, muss die Hoehe der ChatBubble im Falle einer sitzenden Animation anpasst werden
-        heightOffset = sitting ? 1.0f : 0.7f;
+        heightOffset = sitting ? 0.8f : 0.5f;
         Vector3 headPosition = new Vector3(renderer.bounds.center.x, renderer.bounds.max.y - heightOffset, renderer.bounds.center.z);
         chatBubbleTransform.position = headPosition;
 
-        // Verschiebung aller Childs um einen Offset, so dass die Chatbubble leicht rechts neben dem Kopf erscheint, unabhaengig von der Rotation des GameObjects
+        // Verschiebung aller Childs um einen Offset, so dass die Chatbubble vor dem Koerper erscheint, unabhaengig von der Rotation des GameObjects
         Transform[] children = chatBubbleTransform.GetComponentsInChildren<Transform>();
         foreach(Transform child in children) {
             child.localPosition = new Vector3(child.localPosition.x, child.localPosition.y, child.localPosition.z + distance);
@@ -41,38 +50,42 @@ public class ChatBubble : MonoBehaviour
         chatBubbleTransform.rotation = Quaternion.Euler(chatBubbleTransform.eulerAngles.x ,chatBubbleTransform.eulerAngles.y - rotation, chatBubbleTransform.eulerAngles.z);
 
         // Ausfuehren der Standardmethode zur Anpassung der Groeße und des Textes der ChatBubble
-        chatBubbleTransform.GetComponent<ChatBubble>().Setup(text);
+        chatBubbleTransform.GetComponent<ChatBubble>().Setup(text, gender);
 
         return chatBubbleTransform;
 
     }
 
-    void Awake() {
+    void Awake()
+    {
 
         backgroundSpriteRenderer = transform.Find("Background").GetComponent<SpriteRenderer>();
         textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
 
         animator = GetComponent<Animator>();
+
     }
 
     void Start()
     {
 
+        blipSound = gender.Equals('m') ? blipSoundMale : blipSoundFemale;
 
     }
 
     void Update()
     {
 
-
+        SpeedUpChatBubble();
         WriteText();
     }
 
         // Standardmethode zur Anpassung der Groeße und des Textes der ChatBubble
-    private void Setup (string text) {
+    private void Setup (string text, char gender) {
 
         //textMeshPro.SetText(text);
         this.text = text;
+        this.gender = gender;
 
         // Da die Textanzeige nicht zuverlaessig aktualisiert wird, muss dies erzwungen werden
         textMeshPro.ForceMeshUpdate();
@@ -97,7 +110,11 @@ public class ChatBubble : MonoBehaviour
                 // Naechsten Buchstaben anzeigen
                 timer += timePerCharacter;
                 characterIndex++;
-                textMeshPro.text = text.Substring(0, characterIndex);
+                
+                string currentText = text.Substring(0, characterIndex);
+                textMeshPro.text = currentText;
+
+                PlayCharacterSound(text.ToCharArray()[currentText.Length - 1]);
 
                 if(characterIndex >= text.Length) {
                     // Sobald der komplette Text geschrieben wurde
@@ -120,9 +137,28 @@ public class ChatBubble : MonoBehaviour
 
     // Wartet n Sekunden, und zerstoert dannach das ChatBubble-GameObject nach n Sekunden, damit die Animation in Ruhe abgespielt wird
     private IEnumerator DestroyChatBubble() {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(bubbleDieTime);
         animator.Play("ChatBubbleExit");
         Destroy(transform.gameObject, 1f);
+    }
+
+    private void PlayCharacterSound(char nextCharacter) {
+
+        if(!Char.IsWhiteSpace(nextCharacter))
+        AudioSource.PlayClipAtPoint(blipSound, transform.position, 0.2f);
+    }
+
+    private void SpeedUpChatBubble() {
+
+        // Beschleunigt die ChatBubble, wenn die linke Maustaste gedrueckt gehalten wird
+        if(Input.GetKey(KeyCode.Mouse0)) {
+            timePerCharacter = 0.0625f;
+            bubbleDieTime = 0.5f;
+        } else {
+            timePerCharacter = 0.125f;
+            bubbleDieTime = 2f;
+        }
+
     }
 
 }

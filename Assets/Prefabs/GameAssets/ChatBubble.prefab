@@ -302,6 +302,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f88005e8f0404b4ca5005b60acae46d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blipSoundMale: {fileID: 8300000, guid: 170239956add58a4699db3056faf3450, type: 3}
+  blipSoundFemale: {fileID: 8300000, guid: 83bd484f79d1ba3498185287fa173a46, type: 3}
 --- !u!95 &367907236478968701
 Animator:
   serializedVersion: 5

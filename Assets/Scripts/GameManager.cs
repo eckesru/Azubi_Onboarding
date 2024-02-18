@@ -44,8 +44,9 @@ public class GameManager : MonoBehaviour
         UnlockDoors("Flur 1");
         UnlockDoors("Empfang");
 
-  //      string[] npc1text = new string[] {"Oh, du bist der neue. Richtig?", "Komm, ich zeig dir mal was.", "Das wird auch ganz lustig!"};
- //       testnpc.SetupNPC(npc1text);
+
+        string[] npc1text = new string[] {"Oh, du bist der neue. Richtig?", "Komm, ich zeig dir mal was.", "Das wird auch ganz lustig!"};
+        ActivateNPC("Test NPC", npc1text);
     }
 
     void Update()
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
 
         // Durchlaeuft alle NPC und aktiviert sie, wenn der Name uebereinstimmt
         foreach (NPCController npc in npcs) {
-            if (npc.gameObject.name.Equals(npcName)) {
+            if (npc.npcName.Equals(npcName)) {
                 npc.SetupNPC(textLines);
             }
         }

@@ -1832,7 +1832,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactRange: 4
+  _npcName: 
   animationName: Typing
+  sitting: 0
+  distanceChatBubble: 0.5
+  rotationChatBubble: 180
+  head: {fileID: 1976102896402997629}
+  player: {fileID: 0}
 --- !u!136 &7944181192721725572
 CapsuleCollider:
   m_ObjectHideFlags: 0
