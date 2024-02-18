@@ -19,7 +19,7 @@ public class ChatBubble : MonoBehaviour
 
     // Hilfsfunktion zur automatischen Generierung von ChatBubbles
     // Optionale Argument enthalten Standardwerte, um die ChatBubble direkt vor einem stehenden NPC erscheinen zu lassen
-    public static Transform CreateChatBubble(GameObject gameObject, String text, bool sitting = false, float distance = 0.5f,  float rotation = 180) {
+    public static Transform CreateChatBubble(GameObject gameObject, string text, bool sitting = false, float distance = 0.5f,  float rotation = 180) {
 
         // Instanzierung des GameObjects als Child des GameObjects, basierend auf dem ChatBubble-Prefab
         Transform chatBubbleTransform = Instantiate(GameAssets.Instance.chatBubble, gameObject.transform);
@@ -69,7 +69,7 @@ public class ChatBubble : MonoBehaviour
     }
 
         // Standardmethode zur Anpassung der Groeße und des Textes der ChatBubble
-    private void Setup (String text) {
+    private void Setup (string text) {
 
         //textMeshPro.SetText(text);
         this.text = text;

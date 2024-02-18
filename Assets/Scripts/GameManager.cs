@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void ActivateNPCS(string npcName, string[] textLines) {
+    private void ActivateNPC(string npcName, string[] textLines) {
 
         // Durchlaeuft alle NPC und aktiviert sie, wenn der Name uebereinstimmt
         foreach (NPCController npc in npcs) {
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void UnlockDoors(String roomName) {
+    private void UnlockDoors(string roomName) {
 
         // Durchlaeuft alle Tueren und oeffnet sie, wenn der Raumname uebereinstimmt
         foreach (DoorController door in doors) {

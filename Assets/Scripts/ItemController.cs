@@ -8,6 +8,8 @@ public class ItemController : MonoBehaviour, IInteractable
 
     [SerializeField] private bool keyItem = false;
     [SerializeField] private float _interactRange = 3.0f;
+    [SerializeField] private AudioClip collectItemClip;
+    [SerializeField] private AudioClip collectkeyItemClip;
     public float interactRange {get {return _interactRange;} private set{_interactRange = value;}}
     private float speed = 8.0f;
     private bool pickedUp = false;
@@ -25,6 +27,7 @@ public class ItemController : MonoBehaviour, IInteractable
             Vector3 playerPosition = new Vector3(player.transform.position.x, player.transform.position.y + 0.8f, player.transform.position.z);
             // Bewegt das Item in Richtung des Spielers
             transform.position = Vector3.MoveTowards(transform.position, playerPosition, speed * Time.deltaTime);
+
             CheckDistanceAndDestroy();
 }
     }
@@ -35,10 +38,22 @@ public class ItemController : MonoBehaviour, IInteractable
 
         if (distance < 1.0f) {
 
+            PlaySound();
+
             GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             gameManager.AddPoint(keyItem);
             Destroy(gameObject);
         }
+    }
+
+    private void PlaySound() {
+
+        if(keyItem) {
+            AudioSource.PlayClipAtPoint(collectkeyItemClip, transform.position);
+        } else {
+            AudioSource.PlayClipAtPoint(collectItemClip, transform.position);
+        }
+        
     }
 
     public void Interact() {

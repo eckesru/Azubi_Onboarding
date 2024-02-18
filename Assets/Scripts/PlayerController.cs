@@ -177,8 +177,12 @@ private bool OnGround()
 
 
 private void CheckInteractions() {
-    // Prüft, welche Collider von GameObjects sich innerhalb der interactRange befinden
-    collidersInRange = Physics.OverlapSphere(transform.position, interactRange);
+    // Definiert die Größe und die Mitte der Box, die verwendet werden soll
+    Vector3 boxSize = new Vector3(interactRange, 2.8f, interactRange); // Stelle die Größe entsprechend deinen Bedürfnissen ein
+    Vector3 boxCenter = transform.position + Vector3.up * boxSize.y / 2; // Zentriert die Box in einer angemessenen Höhe relativ zum Spieler
+
+    // Prüft, welche Collider von GameObjects sich innerhalb der Box befinden
+    collidersInRange = Physics.OverlapBox(boxCenter, boxSize / 2, transform.rotation);
 
     foreach (Collider collider in collidersInRange) {
         // Überprüft, ob das Objekt eine IInteractable-Komponente hat und innerhalb der interactRange liegt

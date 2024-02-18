@@ -10,12 +10,17 @@ public class DoorController : MonoBehaviour, IInteractable
     [SerializeField] public bool locked = true;
     [SerializeField] private bool openInside = true;
     [SerializeField] private float _interactRange = 1.0f;
+    [SerializeField] private bool sharedInteractTrigger = false;
+    [SerializeField] private AudioClip openClip;
+    [SerializeField] private AudioClip closedClip;
     public float interactRange { get {return _interactRange;} private set {_interactRange = value;} }
     private bool opened = false;
+    private bool closedClipTrigger = false;
+    private bool finalLock = false;
     private Transform door;
     private float closedY;
-    private String _roomName;
-    public String roomName {get {return _roomName;} private set {_roomName = value;}}
+    private string _roomName;
+    public string roomName {get {return _roomName;} private set {_roomName = value;}}
     private Animator animator;
 
     void Awake() {
@@ -39,7 +44,10 @@ public class DoorController : MonoBehaviour, IInteractable
 
     private void DoorIsLocked() {
 
-    // TODO: LockedSound
+        if(closedClipTrigger) {
+            AudioSource.PlayClipAtPoint(closedClip, transform.position);
+            closedClipTrigger = false;
+        }
 
     }
 
@@ -48,15 +56,17 @@ public class DoorController : MonoBehaviour, IInteractable
         // Spiel dynamisch die entsprechende Tuer-Animation anhand closedY und openY ab
         animator.Play("DoorOpen_" + closedY + "_" + GetOpenY());
         
-        // TODO: OpenedSound
+        AudioSource.PlayClipAtPoint(openClip, transform.position);
 
         opened = true;
+
+        OpenSharedDoors();
 
     }
 
     public void Interact() {
 
-        if (!opened) {
+        if (!opened || finalLock) {
             if (locked) {
                 DoorIsLocked();
             } else {
@@ -66,7 +76,7 @@ public class DoorController : MonoBehaviour, IInteractable
 
     }
 
-    public String GetRoomName() {
+    public string GetRoomName() {
         return roomName;
     }
 
@@ -77,5 +87,32 @@ public class DoorController : MonoBehaviour, IInteractable
     private float GetOpenY() {
         // Berechnet Rotation-Y am Ende der Tueroffnung
         return (float) Math.Round(closedY + (openInside ? 90.0f : -90.0f));
+    }
+
+    private void OnTriggerEnter(Collider collider) {
+        closedClipTrigger = true;
+    }
+
+    private void OpenSharedDoors() {
+
+        if (sharedInteractTrigger) {
+            GameObject parent = transform.parent.gameObject;
+            DoorController[] doors = parent.GetComponentsInChildren<DoorController>();
+
+            foreach(DoorController door in doors) {
+            door.Interact();
+            }
+        }
+
+    }
+
+    public void CloseDoor() {
+
+        animator.Play("DoorOpen_" + GetOpenY() + "_" + closedY);
+
+        AudioSource.PlayClipAtPoint(closedClip, transform.position);
+
+        locked = true;
+        finalLock = true;
     }
 }
