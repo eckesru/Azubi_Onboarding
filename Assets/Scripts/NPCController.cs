@@ -16,6 +16,7 @@ public class NPCController : MonoBehaviour, IInteractable
     [SerializeField] private bool sitting = false;
     [SerializeField] private float distanceChatBubble = 0.5f;
     [SerializeField] private float rotationChatBubble = 180f;
+    [SerializeField] bool lookAtPlayer = false;
     [SerializeField] private Transform head;
     private PlayerController player;
 
@@ -43,6 +44,7 @@ public class NPCController : MonoBehaviour, IInteractable
 
         player = FindObjectOfType<PlayerController>();
 
+
     }
 
     void Start()
@@ -56,7 +58,7 @@ public class NPCController : MonoBehaviour, IInteractable
     }
 
     void LateUpdate() {
-        if (interact) MoveHead();
+        if (interact && lookAtPlayer) MoveHead();
     }
 
     public void SetupNPC(string[] textLines) {

@@ -8,6 +8,9 @@ public class AudioController : MonoBehaviour
 
     [SerializeField] private bool active = false;
     [SerializeField] private bool destroyOnTrigger = false;
+    [SerializeField] private bool muteMode = false;
+    [SerializeField] private float destroyTime = 0f;
+    private bool locked = false;
 
     private AudioSource[] audioSources; 
 
@@ -17,10 +20,11 @@ public class AudioController : MonoBehaviour
     }
 
     void Start() {
-        if (active) {
+        if (active || muteMode) {
             SwitchAudioSourceState();
             SwitchAudioSourceState();
         }
+
     }
 
 
@@ -30,23 +34,39 @@ public class AudioController : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider collider) {
-        SwitchAudioSourceState();
+
+        if (!locked) SwitchAudioSourceState();
 
         if(destroyOnTrigger) {
-            Destroy(gameObject);
+            locked = true;
+            // Startet eine Coroutine, welche waehrend der Ausfuehrung ein oder mehrere return yields verarbeiten kann
+            StartCoroutine(DestroyTrigger());
         }
     }
 
     private void SwitchAudioSourceState() {
         foreach (AudioSource audioSource in audioSources) {
             if(active) {
+                if (muteMode){
+                    audioSource.mute = true;
+                } else {
                 audioSource.Stop();
+                }
             } else {
+                if (muteMode){
+                    audioSource.mute = false;
+                } else {
                 audioSource.Play();
+            }
             }
         }
         active = !active;
     }
 
+    private IEnumerator DestroyTrigger() {
 
+        yield return new WaitForSeconds(destroyTime);
+
+        Destroy(gameObject);
+    }
 }

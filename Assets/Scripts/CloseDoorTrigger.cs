@@ -20,9 +20,10 @@ public class CloseDoorTrigger : MonoBehaviour
         // Durchlaeuft alle Tueren und schliesst sie, wenn der Raumname uebereinstimmt
         foreach (DoorController door in doors) {
             if (door.GetRoomName().Equals(roomName)) {
-                door.CloseDoor();
+                if(door.opened) {
+                    door.CloseDoor();
+                }
             }
         }
-
     }
 }

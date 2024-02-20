@@ -11,10 +11,12 @@ public class DoorController : MonoBehaviour, IInteractable
     [SerializeField] private bool openInside = true;
     [SerializeField] private float _interactRange = 1.0f;
     [SerializeField] private bool sharedInteractTrigger = false;
+    [SerializeField] private bool openOnlyOnce = false;
     [SerializeField] private AudioClip openClip;
     [SerializeField] private AudioClip closedClip;
     public float interactRange { get {return _interactRange;} private set {_interactRange = value;} }
-    private bool opened = false;
+    private bool _opened = false;
+    public bool opened { get {return _opened;} private set {_opened = value;} }
     private bool closedClipTrigger = false;
     private bool finalLock = false;
     private Transform door;
@@ -112,7 +114,11 @@ public class DoorController : MonoBehaviour, IInteractable
 
         AudioSource.PlayClipAtPoint(closedClip, transform.position);
 
-        locked = true;
-        finalLock = true;
+        if(openOnlyOnce) {
+            locked = true;
+            finalLock = true;
+        } else {
+            opened = false;
+        }
     }
 }
