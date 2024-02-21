@@ -1,38 +1,62 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class FadeController : MonoBehaviour
 {
-    public CanvasGroup fadePanel;
-    public float fadeDuration = 1f;
 
-    private void Start()
+    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private CanvasGroup fadePanel;
+    private TextMeshProUGUI textMeshPro;
+
+    private void Awake()
     {
-        // Initial, um Spiel zu starten ohne schwarzen Bildschirm
-        FadeOut();
+        textMeshPro = transform.parent.Find("Text").GetComponent<TextMeshProUGUI>();
     }
 
-    public void FadeIn()
+    public void FadeIn(string[] text, int sleepTime)
     {
-        StartCoroutine(DoFadeIn());
+
+        textMeshPro.SetText(text[0]);
+        textMeshPro.ForceMeshUpdate();
+
+        StartCoroutine(DoFadeIn(sleepTime));
     }
 
-    public void FadeOut()
+    public void FadeOut(string[] text, int sleepTime)
     {
-        StartCoroutine(DoFadeOut());
+        AudioListener.volume = 0;
+
+        textMeshPro.SetText(text[0]);
+        textMeshPro.ForceMeshUpdate();
+
+        
+        StartCoroutine(DoFadeOut(sleepTime));
     }
 
-    IEnumerator DoFadeIn()
+    private IEnumerator DoFadeIn(int sleepTime)
     {
         while (fadePanel.alpha < 1)
         {
             fadePanel.alpha += Time.deltaTime / fadeDuration;
             yield return null;
         }
+
+        AudioListener.volume = 0;
+
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(sleepTime);
+        Application.Quit();
     }
 
-    IEnumerator DoFadeOut()
+    private IEnumerator DoFadeOut(int sleepTime)
     {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(sleepTime);
+        Time.timeScale = 1f;
+        
+        AudioListener.volume = 1;
+
         while (fadePanel.alpha > 0)
         {
             fadePanel.alpha -= Time.deltaTime / fadeDuration;

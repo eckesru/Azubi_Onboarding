@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject ingameUI;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private FadeController fadeController;
 
     private NPCController[] npcs;
     private DoorController[] doors;
@@ -23,12 +24,17 @@ public class GameManager : MonoBehaviour
     public bool gameRunning = false;
     public bool gamePaused = false;
 
+    private Dictionary<string, string[]> npcDialogues = new Dictionary<string, string[]>();
+
     void Awake() {
 
     }
 
     void Start()
     {
+        InitializeGameScript();
+
+        fadeController.FadeOut(GetDialogue("GameStart"), 5);
 
         // Zentriert den Cursor in der Mitte und blendet ihn aus
         Cursor.lockState = CursorLockMode.Locked;
@@ -44,9 +50,7 @@ public class GameManager : MonoBehaviour
         UnlockDoors("Flur 1");
         UnlockDoors("Empfang");
 
-
-        string[] npc1text = new string[] {"Oh, du bist der neue. Richtig?", "Komm, ich zeig dir mal was.", "Das wird auch ganz lustig!"};
-        ActivateNPC("Test NPC", npc1text);
+        ActivateNPC("Test NPC", GetDialogue("Test"));
     }
 
     void Update()
@@ -97,7 +101,26 @@ public class GameManager : MonoBehaviour
     private void GameLoop() {
 
 
-        
+
+    }
+
+    // Hilfsmethode zum Hinzufuegen von Dialogen
+    // Mithilfe des params-Modifizierers muessen lediglich String angegeben werden, welche dann automatisch in ein Array verpackt werden
+    private void AddDialogue(string dialogueName, params string[] dialogues)
+    {
+        npcDialogues[dialogueName] = dialogues;
+    }
+
+    private string[] GetDialogue(string dialogueName) {
+            return npcDialogues[dialogueName];
+    }
+
+
+    private void InitializeGameScript() {
+
+        AddDialogue("GameStart", "Herzlich Willkommen bei der Fleet GmbH" + "\n\n" + "Wir wünschen dir viel Spaß beim Azubi-Onbarding-Programm!");
+        AddDialogue("Test", "Test1  ...", "Test2  .......");
+
     }
 
 }
