@@ -15,6 +15,9 @@ public class ItemController : MonoBehaviour, IInteractable
     private bool pickedUp = false;
     private GameObject player;
 
+    public delegate void KeyItemCollected();
+    public static event KeyItemCollected OnKeyItemCollected;
+
     void Start()
     {
         player = GameObject.Find("Player");
@@ -38,10 +41,11 @@ public class ItemController : MonoBehaviour, IInteractable
 
         if (distance < 1.0f) {
 
-            PlaySound();
-
             GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             gameManager.AddPoint(keyItem);
+
+            PlaySound();
+
             Destroy(gameObject);
         }
     }
@@ -50,6 +54,9 @@ public class ItemController : MonoBehaviour, IInteractable
 
         if(keyItem) {
             AudioSource.PlayClipAtPoint(collectkeyItemClip, transform.position);
+
+            // Loest Event aus, welches im GameController verarbeitet aus
+            OnKeyItemCollected();
         } else {
             AudioSource.PlayClipAtPoint(collectItemClip, transform.position);
         }

@@ -10,7 +10,9 @@ public class AudioController : MonoBehaviour
     [SerializeField] private bool destroyOnTrigger = false;
     [SerializeField] private bool muteMode = false;
     [SerializeField] private float destroyTime = 0f;
+    [SerializeField] private bool isRoomTrigger = false;
     private bool locked = false;
+    private bool roomEntered = false;
 
     private AudioSource[] audioSources; 
 
@@ -35,7 +37,14 @@ public class AudioController : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider) {
 
-        if (!locked) SwitchAudioSourceState();
+        if (!locked) {
+
+            if(isRoomTrigger) {
+                HandleTriggerJump(collider);
+            }
+
+            SwitchAudioSourceState();
+        }
 
         if(destroyOnTrigger) {
             locked = true;
@@ -68,5 +77,12 @@ public class AudioController : MonoBehaviour
         yield return new WaitForSeconds(destroyTime);
 
         Destroy(gameObject);
+    }
+
+    private void HandleTriggerJump(Collider collider) {
+            // Bewegt den Trigger beim Eintreten des Raums etwas zurueck, damit er nicht versehentlich doppelt ausgeloest werden kann
+            // Beim erneuten ausloesen, wird der Trigger an die urspruengliche Position gesetzt
+            transform.position += roomEntered ? (transform.forward.normalized / 2) : (-transform.forward / 2);
+            roomEntered = !roomEntered;
     }
 }

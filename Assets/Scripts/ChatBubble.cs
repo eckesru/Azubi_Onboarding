@@ -145,7 +145,7 @@ public class ChatBubble : MonoBehaviour
     private void PlayCharacterSound(char nextCharacter) {
 
         if(!Char.IsWhiteSpace(nextCharacter))
-        AudioSource.PlayClipAtPoint(blipSound, transform.position, 0.2f);
+        AudioSource.PlayClipAtPoint(blipSound, transform.position, 0.1f);
     }
 
     private void SpeedUpChatBubble() {

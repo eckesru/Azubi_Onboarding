@@ -84,4 +84,20 @@ public class GameManager : MonoBehaviour
 
     }
 
+    void OnEnable() {
+        // Bei Ausloesen des Events, rufe die GameLoop-Methode auf (Abonnieren)
+        ItemController.OnKeyItemCollected += GameLoop;
+    }
+
+    void OnDisable() {  
+        // Bei Zerstoerung des GameObjects mit dem Event, rufe nicht mehr die GameLoop-Methode auf (Abbestellen)
+        ItemController.OnKeyItemCollected -= GameLoop;
+    }
+
+    private void GameLoop() {
+
+
+        
+    }
+
 }
