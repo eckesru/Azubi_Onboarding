@@ -5,13 +5,14 @@ using TMPro;
 public class FadeController : MonoBehaviour
 {
 
-    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private float _fadeDuration = 1f;
+    public float fadeDuration { get {return _fadeDuration;} private set {_fadeDuration = value;} }
     [SerializeField] private CanvasGroup fadePanel;
     private TextMeshProUGUI textMeshPro;
 
     private void Awake()
     {
-        textMeshPro = transform.parent.Find("Text").GetComponent<TextMeshProUGUI>();
+        textMeshPro = transform.Find("Text").GetComponent<TextMeshProUGUI>();
     }
 
     public void FadeIn(string[] text, int sleepTime)
@@ -25,11 +26,9 @@ public class FadeController : MonoBehaviour
 
     public void FadeOut(string[] text, int sleepTime)
     {
-        AudioListener.volume = 0;
 
         textMeshPro.SetText(text[0]);
         textMeshPro.ForceMeshUpdate();
-
         
         StartCoroutine(DoFadeOut(sleepTime));
     }
@@ -42,7 +41,7 @@ public class FadeController : MonoBehaviour
             yield return null;
         }
 
-        AudioListener.volume = 0;
+        AudioListener.pause = true;
 
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(sleepTime);
@@ -55,7 +54,7 @@ public class FadeController : MonoBehaviour
         yield return new WaitForSecondsRealtime(sleepTime);
         Time.timeScale = 1f;
         
-        AudioListener.volume = 1;
+        AudioListener.pause = false;
 
         while (fadePanel.alpha > 0)
         {
