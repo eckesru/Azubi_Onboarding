@@ -42,7 +42,7 @@ public class ItemController : MonoBehaviour, IInteractable
         if (distance < 1.0f) {
 
             GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            gameManager.AddPoint(keyItem);
+            gameManager.AddPoint(1, keyItem);
 
             PlaySound();
 

@@ -18,6 +18,8 @@ public class NPCController : MonoBehaviour, IInteractable
     [SerializeField] private float rotationChatBubble = 180f;
     [SerializeField] bool lookAtPlayer = false;
     [SerializeField] private Transform head;
+    private bool keyDialogue = false;
+    private bool keyDialogueTriggered = false;
     private PlayerController player;
 
     private char gender;
@@ -35,6 +37,9 @@ public class NPCController : MonoBehaviour, IInteractable
     private Vector3 lastHeadPosition;
 
     private bool interact = false;
+
+    public delegate void KeyDialogueFinished();
+    public static event KeyDialogueFinished OnKeyDialogueFinished;
 
     void Awake() {
 
@@ -61,8 +66,9 @@ public class NPCController : MonoBehaviour, IInteractable
         if (interact && lookAtPlayer) MoveHead();
     }
 
-    public void SetupNPC(string[] textLines) {
+    public void SetupNPC(string[] textLines, bool keyDialogue) {
         this.textLines = textLines;
+        this.keyDialogue = keyDialogue;
         index = 0;
         active = true;
 
@@ -71,8 +77,17 @@ public class NPCController : MonoBehaviour, IInteractable
     public void Interact() {
 
         if (active && index < textLines.Length && chatBubble == null) {
-                chatBubble = ChatBubble.CreateChatBubble(gameObject, textLines[index], sitting, distanceChatBubble, rotationChatBubble, gender);
-                index++;
+            chatBubble = ChatBubble.CreateChatBubble(gameObject, textLines[index], sitting, distanceChatBubble, rotationChatBubble, gender);
+            index++;
+        }
+
+        if(index == textLines.Length && keyDialogue && !keyDialogueTriggered) {
+            keyDialogueTriggered = true;
+
+            GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            gameManager.AddPoint(0, keyDialogue);
+            
+            OnKeyDialogueFinished();
         }
 
         interact = true;
