@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -45,11 +43,6 @@ public class PlayerController : MonoBehaviour
         playerHeight = cameraView.position.y;
     }
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
 
@@ -69,10 +62,6 @@ public class PlayerController : MonoBehaviour
         HandlePlayerRotation();
 
         PreventPlayerClimbing();
-
-    }
-
-    private void LateUpdate() {
 
     }
 
@@ -170,33 +159,34 @@ public class PlayerController : MonoBehaviour
 
 
 
-private bool OnGround()
-{
-    return Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayerMask);
-}
+    private bool OnGround()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayerMask);
+    }
 
 
-private void CheckInteractions() {
-    // Definiert die Größe und die Mitte der Box, die verwendet werden soll
-    Vector3 boxSize = new Vector3(interactRange, 2.8f, interactRange); // Stelle die Größe entsprechend deinen Bedürfnissen ein
-    Vector3 boxCenter = transform.position + Vector3.up * boxSize.y / 2; // Zentriert die Box in einer angemessenen Höhe relativ zum Spieler
+    private void CheckInteractions() {
+        // Definiert die Größe und die Mitte der Box, die verwendet werden soll
+        Vector3 boxSize = new Vector3(interactRange, 2.8f, interactRange); // Stelle die Größe entsprechend deinen Bedürfnissen ein
+        Vector3 boxCenter = transform.position + Vector3.up * boxSize.y / 2; // Zentriert die Box in einer angemessenen Höhe relativ zum Spieler
 
-    // Prüft, welche Collider von GameObjects sich innerhalb der Box befinden
-    collidersInRange = Physics.OverlapBox(boxCenter, boxSize / 2, transform.rotation);
+        // Prüft, welche Collider von GameObjects sich innerhalb der Box befinden
+        collidersInRange = Physics.OverlapBox(boxCenter, boxSize / 2, transform.rotation);
 
-    foreach (Collider collider in collidersInRange) {
-        // Überprüft, ob das Objekt eine IInteractable-Komponente hat und innerhalb der interactRange liegt
-        if (collider.TryGetComponent<IInteractable>(out var interactable)) {
+        foreach (Collider collider in collidersInRange) {
 
-            // Ermittelt die Distanz zwischen Spieler und Objekt
-            float distance = Vector3.Distance(transform.position, collider.transform.position);
+            // Überprüft, ob das Objekt eine IInteractable-Komponente hat und innerhalb der interactRange liegt
+            if (collider.TryGetComponent<IInteractable>(out var interactable)) {
 
-            // Führt die Interact()-Methode des Objekts aus, wenn es innerhalb der Reichweite ist
-            if (interactable.interactRange >= distance) {
-                interactable.Interact();
+                // Ermittelt die Distanz zwischen Spieler und Objekt
+                float distance = Vector3.Distance(transform.position, collider.transform.position);
+
+                // Führt die Interact()-Methode des Objekts aus, wenn es innerhalb der Reichweite ist
+                if (interactable.interactRange >= distance) {
+                    interactable.Interact();
+                }
             }
         }
     }
-}
 
 }

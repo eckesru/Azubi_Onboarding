@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
 using UnityEngine;
 
 public class ItemController : MonoBehaviour, IInteractable
@@ -8,8 +5,10 @@ public class ItemController : MonoBehaviour, IInteractable
 
     [SerializeField] private bool keyItem = false;
     [SerializeField] private float _interactRange = 3.0f;
+    [SerializeField] private string _itemName;
+    public string itemName {get {return _itemName;} private set {_itemName = value;}}
     [SerializeField] private AudioClip collectItemClip;
-    [SerializeField] private AudioClip collectkeyItemClip;
+    [SerializeField] private AudioClip collectKeyItemClip;
     public float interactRange {get {return _interactRange;} private set{_interactRange = value;}}
     private float speed = 8.0f;
     private bool pickedUp = false;
@@ -53,12 +52,12 @@ public class ItemController : MonoBehaviour, IInteractable
     private void PlaySound() {
 
         if(keyItem) {
-            AudioSource.PlayClipAtPoint(collectkeyItemClip, transform.position);
+            AudioSource.PlayClipAtPoint(collectKeyItemClip, transform.position, 0.5f);
 
             // Loest Event aus, welches im GameController verarbeitet aus
             OnKeyItemCollected();
         } else {
-            AudioSource.PlayClipAtPoint(collectItemClip, transform.position);
+            AudioSource.PlayClipAtPoint(collectItemClip, transform.position, 0.5f);
         }
         
     }

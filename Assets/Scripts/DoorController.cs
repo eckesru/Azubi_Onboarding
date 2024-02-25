@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour, IInteractable
@@ -32,15 +28,6 @@ public class DoorController : MonoBehaviour, IInteractable
 
         roomName = transform.parent.parent.name;
         closedY = (float) Math.Round(door.gameObject.transform.eulerAngles.y);
-
-    }
-
-    void Start() {
-
-    }
-
-    void Update()
-    {
 
     }
 

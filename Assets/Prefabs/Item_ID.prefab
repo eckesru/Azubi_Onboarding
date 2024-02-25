@@ -49,8 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keyItem: 0
   _interactRange: 3
+  _itemName: 
   collectItemClip: {fileID: 8300000, guid: 75c6d325889c46945a8cc91b6d14efea, type: 3}
-  collectkeyItemClip: {fileID: 8300000, guid: bd9e374e731c23e4ca3b05d505a4811e, type: 3}
+  collectKeyItemClip: {fileID: 8300000, guid: bd9e374e731c23e4ca3b05d505a4811e, type: 3}
 --- !u!135 &5169350039206443360
 SphereCollider:
   m_ObjectHideFlags: 0

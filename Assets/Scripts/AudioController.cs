@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AudioController : MonoBehaviour
@@ -27,12 +25,6 @@ public class AudioController : MonoBehaviour
             SwitchAudioSourceState();
         }
 
-    }
-
-
-    void Update()
-    {
-        
     }
 
     private void OnTriggerEnter(Collider collider) {

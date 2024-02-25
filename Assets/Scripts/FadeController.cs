@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class FadeController : MonoBehaviour
 {
 
-    [SerializeField] private float _fadeDuration = 1f;
+    [SerializeField] private float _fadeDuration;
     public float fadeDuration { get {return _fadeDuration;} private set {_fadeDuration = value;} }
     [SerializeField] private CanvasGroup fadePanel;
     private TextMeshProUGUI textMeshPro;
@@ -35,6 +36,7 @@ public class FadeController : MonoBehaviour
 
     private IEnumerator DoFadeIn(int sleepTime)
     {
+
         while (fadePanel.alpha < 1)
         {
             fadePanel.alpha += Time.deltaTime / fadeDuration;
@@ -45,7 +47,7 @@ public class FadeController : MonoBehaviour
 
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(sleepTime);
-        Application.Quit();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private IEnumerator DoFadeOut(int sleepTime)

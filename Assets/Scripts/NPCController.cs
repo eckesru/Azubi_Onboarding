@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class NPCController : MonoBehaviour, IInteractable
@@ -19,8 +14,9 @@ public class NPCController : MonoBehaviour, IInteractable
     [SerializeField] bool lookAtPlayer = false;
     [SerializeField] private Transform head;
     private bool keyDialogue = false;
-    private bool keyDialogueTriggered = false;
+    private bool keyDialogueTriggered;
     private PlayerController player;
+    private GameManager gameManager;
 
     private char gender;
 
@@ -49,6 +45,7 @@ public class NPCController : MonoBehaviour, IInteractable
 
         player = FindObjectOfType<PlayerController>();
 
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
     }
 
@@ -69,6 +66,7 @@ public class NPCController : MonoBehaviour, IInteractable
     public void SetupNPC(string[] textLines, bool keyDialogue) {
         this.textLines = textLines;
         this.keyDialogue = keyDialogue;
+        keyDialogueTriggered = false;
         index = 0;
         active = true;
 
@@ -76,26 +74,38 @@ public class NPCController : MonoBehaviour, IInteractable
 
     public void Interact() {
 
-        if (active && index < textLines.Length && chatBubble == null) {
-            chatBubble = ChatBubble.CreateChatBubble(gameObject, textLines[index], sitting, distanceChatBubble, rotationChatBubble, gender);
-            index++;
-        }
+        if (active) {
 
-        if(index == textLines.Length && keyDialogue && !keyDialogueTriggered) {
-            keyDialogueTriggered = true;
+            // Stoesst die naechste ChatBubble an, wenn keine mehr vorhanden ist
+            if (index < textLines.Length && chatBubble == null) {
+                chatBubble = ChatBubble.CreateChatBubble(gameObject, textLines[index], sitting, distanceChatBubble, rotationChatBubble, gender);
+                index++;
+            }
 
-            GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            gameManager.AddPoint(0, keyDialogue);
+            // Trigger fuer den naechsten keyPoint, wenn der letzte Dialog erreicht ist
+            if(index == textLines.Length && keyDialogue && !keyDialogueTriggered) {
+                keyDialogueTriggered = true;
+
+                gameManager.AddPoint(0, keyDialogue);
             
-            OnKeyDialogueFinished();
-        }
+                OnKeyDialogueFinished();
+            }
 
         interact = true;
+
+        }
     }   
 
     private void OnTriggerEnter(Collider collider) {
         if (active && index == textLines.Length) {
             index = textLines.Length - 1;
+        }
+    }
+
+    private void OnTriggerExit(Collider collider) {
+        if(chatBubble != null && index != 0) {
+            index--;
+            Destroy(chatBubble.gameObject);
         }
     }
 
@@ -120,11 +130,11 @@ public class NPCController : MonoBehaviour, IInteractable
 
     // Berechnet den Winkel zwischen der aktuellen Blickrichtung und der Zielrichtung
     Vector3 targetDir = player.cameraView.position - head.position;
-    float angleToTarget = Vector3.Angle(head.forward, targetDir);
+    float angleToTarget = Vector3.Angle(targetDir, head.forward);
 
     // Wenn der Winkel nicht ueberschritten wurde, passe Blickrichtung an
     // Wenn der Winkel ueberschritten wurde, passe an letzte erlaubte Blickrichtung an
-    if (!(angleToTarget > maxRotationAngle)) {
+    if (angleToTarget <= maxRotationAngle) {
         head.LookAt(player.cameraView.position);
         lastHeadPosition = player.cameraView.position;
     } else {

@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
-using Unity.VisualScripting;
-using UnityEngine.UIElements;
 
 public class ChatBubble : MonoBehaviour
 {
@@ -23,6 +20,10 @@ public class ChatBubble : MonoBehaviour
     private float bubbleDieTime;
     private int characterIndex = 0;
     private bool writeText = false;
+    private int chatBubbleBreakpoint = 35;
+    private int lastWhiteSpaceCharacterPosition = 0;
+    private bool whiteScreenFixed = false;
+    private int whiteScreenFixedPosition;
     private Animator animator;
 
 
@@ -107,14 +108,33 @@ public class ChatBubble : MonoBehaviour
             UpdateChatBubbleBackground();
             timer -= Time.deltaTime;
             while (timer <= 0f) {
+
                 // Naechsten Buchstaben anzeigen
                 timer += timePerCharacter;
                 characterIndex++;
-                
-                string currentText = text.Substring(0, characterIndex);
-                textMeshPro.text = currentText;
 
-                PlayCharacterSound(text.ToCharArray()[currentText.Length - 1]);
+                string currentText = text.Substring(0, characterIndex);
+
+                char currentChar = text.ToCharArray()[currentText.Length - 1];
+
+                // Speichert die letzte bekannte Position eines Whitespaces
+                if (Char.IsWhiteSpace(currentText[characterIndex - 1])) {
+                    lastWhiteSpaceCharacterPosition = characterIndex;
+                }
+
+                // Fuegt einen Zeilenumbruch in die Textposition des letzten Whitespace ein, wenn die maximale Zeichenlaenge ueberschritten wurde
+                if (characterIndex > chatBubbleBreakpoint && lastWhiteSpaceCharacterPosition > chatBubbleBreakpoint)  {
+                    if (!whiteScreenFixed) {
+                        whiteScreenFixedPosition = lastWhiteSpaceCharacterPosition;
+                        whiteScreenFixed = true;
+                    } else {
+                        currentText = currentText.Insert(whiteScreenFixedPosition, "\n");
+                    }
+                    }
+
+                textMeshPro.text = currentText;
+                
+                PlayCharacterSound(currentChar);
 
                 if(characterIndex >= text.Length) {
                     // Sobald der komplette Text geschrieben wurde
@@ -152,11 +172,11 @@ public class ChatBubble : MonoBehaviour
 
         // Beschleunigt die ChatBubble, wenn die linke Maustaste gedrueckt gehalten wird
         if(Input.GetKey(KeyCode.Mouse0)) {
-            timePerCharacter = 0.0625f;
+            timePerCharacter = 0.05f;
             bubbleDieTime = 0.5f;
         } else {
-            timePerCharacter = 0.125f;
-            bubbleDieTime = 2f;
+            timePerCharacter = 0.1f;
+            bubbleDieTime = 1f;
         }
 
     }
