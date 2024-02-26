@@ -17,21 +17,12 @@ public class NPCController : MonoBehaviour, IInteractable
     private bool keyDialogueTriggered;
     private PlayerController player;
     private GameManager gameManager;
-
     private char gender;
-
     Animator animator;
-
     private string[] textLines;
-    
     private int index;
-
     private bool active = false;
-
     private Transform chatBubble;
-
-    private Vector3 lastHeadPosition;
-
     private bool interact = false;
 
     public delegate void KeyDialogueFinished();
@@ -125,22 +116,16 @@ public class NPCController : MonoBehaviour, IInteractable
 
     private void MoveHead() {
         
-    // Begrenzt die maximale Drehung des Kopfs
-    float maxRotationAngle = 30.0f;
+        // Begrenzt die maximale Drehung des Kopfs
+        float maxRotationAngle = 60.0f;
 
-    // Berechnet den Winkel zwischen der aktuellen Blickrichtung und der Zielrichtung
-    Vector3 targetDir = player.cameraView.position - head.position;
-    float angleToTarget = Vector3.Angle(targetDir, head.forward);
+        // Berechnet den Winkel zwischen der aktuellen Blickrichtung und der Zielrichtung
+        Vector3 targetDir = player.cameraView.position - head.position;
+        float angleToTarget = Vector3.Angle(targetDir, head.forward);
 
-    // Wenn der Winkel nicht ueberschritten wurde, passe Blickrichtung an
-    // Wenn der Winkel ueberschritten wurde, passe an letzte erlaubte Blickrichtung an
-    if (angleToTarget <= maxRotationAngle) {
-        head.LookAt(player.cameraView.position);
-        lastHeadPosition = player.cameraView.position;
-    } else {
-        head.LookAt(lastHeadPosition);
+        // Wenn der Winkel nicht ueberschritten wurde, passe Blickrichtung an
+        if (angleToTarget <= maxRotationAngle) {
+            head.LookAt(player.cameraView.position);
+        }
     }
-
-    }
-
 }

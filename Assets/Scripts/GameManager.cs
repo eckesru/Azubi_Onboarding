@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void ActivateItem(string itemName) {
+    private void ActivateItems(string itemName) {
 
         // Durchlaeuft alle Items und aktiviert sie, wenn der Name uebereinstimmt
         foreach (ItemController item in items) {
@@ -119,12 +120,11 @@ public class GameManager : MonoBehaviour
             case 1:
                 UnlockDoors("Flur 1");
                 UnlockDoors("Empfang");
-                UnlockDoors("Sanitaerraum 1");
                 ActivateNPC("Empfang", GetDialogue("Empfang1"), true);
             break;
 
             case 2:
-                ActivateItem("Mitarbeiterausweis");
+                ActivateItems("Mitarbeiterausweis");
             break;
 
             case 3:
@@ -132,6 +132,8 @@ public class GameManager : MonoBehaviour
             break;
 
             case 4:
+                ActivateItems("Standard");
+                UnlockDoors("Sanitaerraum 1");
                 UnlockDoors("Treppenhaus");
                 UnlockDoors("Flur 2");
                 UnlockDoors("Vertriebsabteilung");
@@ -142,7 +144,7 @@ public class GameManager : MonoBehaviour
 
             case 5:
                 UnlockDoors("Kueche");
-                ActivateItem("Kaffee");
+                ActivateItems("Kaffee");
                 ActivateNPC("Kueche", GetDialogue("Kueche"));
             break;
 
@@ -158,14 +160,14 @@ public class GameManager : MonoBehaviour
                 UnlockDoors("Meetingraum 1");
                 ActivateNPC("Meetingraum 1", GetDialogue("Meetingraum"));
                 UnlockDoors("Meetingraum 2");
-                ActivateItem("Schluessel");
+                ActivateItems("Schluessel");
             break;
 
             case 9:
                 ActivateNPC("Empfang", GetDialogue("Empfang9"));
                 UnlockDoors("Poststelle");
                 ActivateNPC("Poststelle", GetDialogue("Poststelle"));
-                ActivateItem("Post");
+                ActivateItems("Post");
             break;
 
             case 10:
@@ -180,7 +182,7 @@ public class GameManager : MonoBehaviour
 
             case 12:
                 UnlockDoors("Serverraum");
-                ActivateItem("Laptop");
+                ActivateItems("Laptop");
             break;
         
             case 13:
@@ -194,7 +196,7 @@ public class GameManager : MonoBehaviour
             break;
                         
             case 15:
-                ActivateItem("Sandwich");
+                ActivateItems("Sandwich");
                 ActivateNPC("Pausenraum", GetDialogue("Pausenraum15"));
             break;
 
@@ -213,7 +215,7 @@ public class GameManager : MonoBehaviour
             break;
 
             case 19:
-                ActivateItem("Golfschlaeger");
+                ActivateItems("Golfschlaeger");
             break;
 
             case 20:
@@ -240,7 +242,7 @@ public class GameManager : MonoBehaviour
         AddDialogue("Vertriebsabteilung4", "Willkommen! Da bist du ja endlich.", "Ich werde dein Ausbilder sein.", "Wie du sicher schon weißt, verkaufen wir hier Fahrzeuge.", "Wie genau das funktioniert, wirst du die nächsten Wochen von mir lernen." , "Zunächst habe ich aber eine Bitte an dich.", "Hol mir bitte einen Kaffe aus der Kueche.");
         AddDialogue("Kueche", "Dieses Chilli basierte auf einem Familienrezept...", "Oh Nein...");
         AddDialogue("Vertriebsabsteilung6", "Danke für den Kaffee.", "Nun habe ich eine kleine Aufgabe für dich.", "Jeden Tag bekommen wir neue Post von unseren Kunden.", "Bitte hole die Post bei der Poststelle unten an der Rezeption ab.");
-        AddDialogue("Empfang7", "Du suchst die Poststelle?", "Die Poststelle findest du links, allerdings habe ich den Schlüssel verlegt.", "Ich glaube ich habe den Schlüssel in einem der beiden Meetingräume vergessen.", "Suche den Schlüssel in den beiden Meetingräumen gegenüber.");
+        AddDialogue("Empfang7", "Du suchst die Poststelle?", "Die Poststelle findest du links, allerdings habe ich den Schlüssel verlegt.", "Ich glaube ich habe ihn in einem der beiden Meetingräume vergessen.", "Suche den Schlüssel in den beiden Meetingräumen gegenüber.");
         AddDialogue("Meetingraum", "Ich habe gleich einen wichtigen Kundentermin.");
         AddDialogue("Empfang9", "Klasse! Die Poststelle findest du links.");
         AddDialogue("Poststelle", "Hi! Ich bin für die tägliche Postbearbeitung zuständig.", "Jeden Tag erhalten wir unzählige Briefe.", "Darunter befinden sich Rechnungen, Verträge, Bestellungen und vieles weitere...", "Meine Aufgabe ist dabei, die Post den richtigen Kollegen zuzuordnen.", "Hab noch einen schönen Tag!");
@@ -249,9 +251,9 @@ public class GameManager : MonoBehaviour
         AddDialogue("IT-Abteilung11", "Hey! Willkommen in der IT-Abteilung!", "Wir kümmern uns um die Technik in der Firma.", "Du brauchst einen Laptop?", "Deinen Laptop findest du im Serverraum, rechts durch die Türe.");
         AddDialogue("IT-Abteilung13", "Wenn du Hilfe mit dem Laptop brauchst, musst du ein Ticket erstellen.");
         AddDialogue("Vertriebsabteilung13", "Super, das wichtigste wäre damit erledigt.", "Wie wäre es mit einer kleinen Pause?", "Es ist sehr wichtig, sich die Zeit für eine Pause zu nehmen.", "Schnapp dir ein Sandwich aus dem Pausenraum, gegenüber von der IT-Abteilung!");
-        AddDialogue("Pausenraum14", "Neuling. Du möchtest ein Sandwich?", "In Ordnung, lass mir dir allerdings zuerst etwas zum Thema Datenschutz erzählen.", "Ich als Datenschutzbeauftragter überwache strengstens die Einhaltung der Datenschutzgesetze.", "Die Kenntnis der DSGVO ist das A und O jedes guten Mitarbeiters.", "Der Schutz von personenbezogenen Daten hat oberste Priorität.", "Kapiert? Dann darfst du dir jetzt ein Sandwich schnappen.");
+        AddDialogue("Pausenraum14", "Neuling. Du möchtest ein Sandwich?", "In Ordnung, lass mir dir aber zuerst etwas zum Thema Datenschutz erzählen.", "Ich als Datenschutzbeauftragter überwache strengstens die Einhaltung der Datenschutzgesetze.", "Die Kenntnis der DSGVO ist das A und O jedes guten Mitarbeiters.", "Der Schutz von personenbezogenen Daten hat oberste Priorität.", "Kapiert? Dann darfst du dir jetzt ein Sandwich schnappen.");
         AddDialogue("Pausenraum15", "Niemals den Datenschutz vergessen, klar?");
-        AddDialogue("Vertriebsabteilung16", "Mit einem vollen Magen lässt sich besser arbeiten, was?", "Als letzte Aufgabe solltest du dich dem Manager vorstellen.", "Das Büro des Managers findest du direkt gegenüber.");
+        AddDialogue("Vertriebsabteilung16", "Mit einem vollen Magen lässt sich gleich besser arbeiten, was?", "Als letzte Aufgabe solltest du dich dem Manager vorstellen.", "Das Büro des Managers findest du direkt gegenüber.");
         AddDialogue("Geschaeftsfuehrer17","Ah, Richtig, du bist der neue Lehrling!", "Ich bin der Manager der Fleet GmbH.", "Wenn du dich gut anstellst, kannst du auch mal so werden wie ich.", "Deshalb habe ich auch eine sehr wichtige Aufgabe für dich.", "Ich brauche unbedingt einen neuen Golfschläger aus dem Lager.", "Das Lager findest du im Erdgeschoss, hinter der braunen Tür.");
         AddDialogue("Lagerraum18", "Neuer, lass mich dir einen Ratschlag geben.", "Kaffee kochen ist die wichtigste Fähigkeit jedes Auszubildenden.", "Wenn du das gut machst, kommst du ganz groß raus.", "Golfschläger? Die findest du hinten durch.");
         AddDialogue("Lagerraum20", "Nur nichts überstürzen, Neuer.");
@@ -347,6 +349,7 @@ public class GameManager : MonoBehaviour
                 gamePaused = true;
                 gameRunning = false;
                 Time.timeScale = 0.0f;
+                UpdateFoundItemsLabel();
                 fadePanel.SetActive(false);
                 pausePanel.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
@@ -371,5 +374,14 @@ public class GameManager : MonoBehaviour
 
     private double GetFinalPercentage() {
         return Math.Round(points / itemAmount * 100, 0);
+    }
+
+    private void UpdateFoundItemsLabel() {
+    	AddDialogue("ItemFoundLabel", points + " / " + itemAmount + " Gegenstände");
+
+        TextMeshProUGUI pauseTMP = pausePanel.transform.Find("ItemLabel").GetComponent<TextMeshProUGUI>();
+
+        pauseTMP.SetText(GetDialogue("ItemFoundLabel")[0]);
+        pauseTMP.ForceMeshUpdate();
     }
 }
