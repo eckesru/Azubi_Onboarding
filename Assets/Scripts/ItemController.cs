@@ -52,12 +52,12 @@ public class ItemController : MonoBehaviour, IInteractable
     private void PlaySound() {
 
         if(keyItem) {
-            AudioSource.PlayClipAtPoint(collectKeyItemClip, transform.position, 0.5f);
+            AudioSource.PlayClipAtPoint(collectKeyItemClip, transform.position, 0.3f);
 
             // Loest Event aus, welches im GameController verarbeitet aus
             OnKeyItemCollected();
         } else {
-            AudioSource.PlayClipAtPoint(collectItemClip, transform.position, 0.5f);
+            AudioSource.PlayClipAtPoint(collectItemClip, transform.position, 0.3f);
         }
         
     }

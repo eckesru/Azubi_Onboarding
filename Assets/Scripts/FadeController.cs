@@ -44,7 +44,8 @@ public class FadeController : MonoBehaviour
         }
 
         AudioListener.pause = true;
-
+        AudioListener.volume = 0;
+        
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(sleepTime);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -57,6 +58,7 @@ public class FadeController : MonoBehaviour
         Time.timeScale = 1f;
         
         AudioListener.pause = false;
+        AudioListener.volume = 1;
 
         while (fadePanel.alpha > 0)
         {

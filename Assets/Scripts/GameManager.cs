@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0.0f;
         AudioListener.pause = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         menuPanel.SetActive(true);
         pausePanel.SetActive(false);
@@ -336,6 +338,7 @@ public class GameManager : MonoBehaviour
         fadePanel.SetActive(true);
         pausePanel.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void HandlePauseMode()
@@ -353,6 +356,7 @@ public class GameManager : MonoBehaviour
                 fadePanel.SetActive(false);
                 pausePanel.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
             else if (!gameRunning && gamePaused)
             {
