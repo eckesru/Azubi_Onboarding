@@ -45,13 +45,10 @@ public class NPCController : MonoBehaviour, IInteractable
         animator.Play(animationName);
     }
 
-    void Update()
-    {
-        interact = false;
-    }
-
     void LateUpdate() {
         if (interact && lookAtPlayer) MoveHead();
+
+        interact = false;
     }
 
     public void SetupNPC(string[] textLines, bool keyDialogue) {
@@ -82,7 +79,7 @@ public class NPCController : MonoBehaviour, IInteractable
                 OnKeyDialogueFinished();
             }
 
-        interact = true;
+            interact = true;
 
         }
     }   
