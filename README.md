@@ -12,6 +12,12 @@ To run the game, you have two options:
 - WebGL: Access the latest release build directly in your web browser.  
 URL: https://eckesru.github.io/DLBMIAMVR02_Azubi_Onboarding/
 
+Disclaimer:  
+In order to build the game locally, you need to import the following Asset Packs into Assets/Packages/SyntyStudios.
+- POLYGON – Sampler Pack
+- POLYGON – Office Pack
+- Simple Sky – Cartoon assets
+
 ![](https://github.com/eckesru/DLBMIAMVR02_Azubi_Onboarding/assets/38622979/9de35a26-74dc-4d77-be97-d8188c830c36)
 ![](https://github.com/eckesru/DLBMIAMVR02_Azubi_Onboarding/assets/38622979/6a7631c9-42d1-44ce-aca3-739006f8053c)
 ![](https://github.com/eckesru/DLBMIAMVR02_Azubi_Onboarding/assets/38622979/0c836137-93ed-42eb-aeac-a3c555df1ff7)
