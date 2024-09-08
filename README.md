@@ -18,7 +18,7 @@ In order to build the game locally, you need to import the following Asset Packs
 - POLYGON – Office Pack
 - Simple Sky – Cartoon assets
 
-![](https://github.com/eckesru/DLBMIAMVR02_Azubi_Onboarding/assets/38622979/9de35a26-74dc-4d77-be97-d8188c830c36)
-![](https://github.com/eckesru/DLBMIAMVR02_Azubi_Onboarding/assets/38622979/6a7631c9-42d1-44ce-aca3-739006f8053c)
-![](https://github.com/eckesru/DLBMIAMVR02_Azubi_Onboarding/assets/38622979/0c836137-93ed-42eb-aeac-a3c555df1ff7)
-![](https://github.com/eckesru/DLBMIAMVR02_Azubi_Onboarding/assets/38622979/cde7c7ed-8ec8-49da-9f65-fa9707871b59)
+![](https://github.com/eckesru/Azubi_Onboarding/assets/38622979/9de35a26-74dc-4d77-be97-d8188c830c36)
+![](https://github.com/eckesru/Azubi_Onboarding/assets/38622979/6a7631c9-42d1-44ce-aca3-739006f8053c)
+![](https://github.com/eckesru/Azubi_Onboarding/assets/38622979/0c836137-93ed-42eb-aeac-a3c555df1ff7)
+![](https://github.com/eckesru/Azubi_Onboarding/assets/38622979/cde7c7ed-8ec8-49da-9f65-fa9707871b59)
