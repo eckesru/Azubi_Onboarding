@@ -1,6 +1,6 @@
-# DLBMIAMVR02 Azubi-Onboarding
+# Azubi-Onboarding
  
-DLBMIAMVR02 Azubi-Onboarding is a 3D Unity-based game designed to facilitate the integration of new apprentices into their workplace. This game allows users to navigate a virtual office environment, interact with NPC colleagues, and engage in tasks that highlight company processes. Inspired by the need for an immersive and interactive onboarding process, it incorporates elements of exploration, learning, and gamification to enhance the apprentice's understanding.  
+Azubi-Onboarding is a 3D Unity-based game designed to facilitate the integration of new apprentices into their workplace. This game allows users to navigate a virtual office environment, interact with NPC colleagues, and engage in tasks that highlight company processes. Inspired by the need for an immersive and interactive onboarding process, it incorporates elements of exploration, learning, and gamification to enhance the apprentice's understanding.  
 
 This application was developed as part of the X-Reality Project (DLBMIAMVR02) at IU International University of Applied Sciences.
 
